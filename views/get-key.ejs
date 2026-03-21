@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Get Key - <%= siteName || 'ExHub' %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/public/css/main.css" />
+  <link rel="icon" type="image/png" href="/public/img/logo-exhub.png" />
+  <script src="/public/js/protect.js" defer></script>
+</head>
+<body class="page-dark">
+  <%- include('partials/nav', { active: 'get-key' }) %>
+
+  <main class="container">
+    <%
+      // Nama cantik untuk provider
+      const providerName = provider === 'linkvertise' ? 'Linkvertise' : 'Work.ink';
+    %>
+
+    <!-- HEADER -->
+    <section class="page-header">
+      <h1>Complete Verification</h1>
+      <p>
+        Complete a quick verification with
+        <span class="accent"><%= providerName %></span>
+        to get your key and start using our scripts.
+      </p>
+    </section>
+
+    <!-- PROVIDER SWITCH -->
+    <section class="card" style="margin-bottom: 1.5rem;">
+      <div class="card-header-row">
+        <h2>Select Provider</h2>
+        <span class="badge badge-soft">Step 1</span>
+      </div>
+
+      <div class="provider-switch" style="display:flex;gap:0.75rem;flex-wrap:wrap;">
+        <a
+          href="/get-key?provider=workink"
+          class="btn btn-small <%= provider === 'workink' ? 'btn-primary' : 'btn-secondary' %>"
+        >
+          Work.ink
+        </a>
+        <a
+          href="/get-key?provider=linkvertise"
+          class="btn btn-small <%= provider === 'linkvertise' ? 'btn-primary' : 'btn-secondary' %>"
+        >
+          Linkvertise
+        </a>
+      </div>
+
+      <p class="helper-text" style="margin-top: 0.5rem;">
+        You can use any provider you like. Verification is one-time per key and
+        bound to your Discord account.
+      </p>
+    </section>
+
+    <section class="grid-2">
+      <!-- LEFT: VERIFICATION + NEW KEY -->
+      <div class="card">
+        <div class="card-header-row">
+          <h2>Verification</h2>
+          <span class="badge">HWID Locked</span>
+        </div>
+
+        <p class="helper-text">
+          Keys are bound to your Discord account and hardware. Default lifetime:
+          <strong><%= keyTtlHours %>h</strong>.
+        </p>
+
+        <!-- Step 2: mulai verifikasi (set flag di Redis & redirect ke ads) -->
+        <form method="post" action="/get-key/start?provider=<%= provider %>">
+          <button type="submit" class="btn btn-primary btn-full">
+            Start verification with <%= providerName %>
+          </button>
+        </form>
+
+        <% if (newKeyToken) { %>
+          <div class="alert alert-success" style="margin-top: 1rem;">
+            <strong>New Key Generated:</strong>
+            <div class="key-copy-wrap" style="margin-top: 0.5rem;">
+              <code class="mono"><%= newKeyToken %></code>
+              <button
+                type="button"
+                class="btn btn-small btn-outline"
+                data-copy-key="<%= newKeyToken %>"
+              >
+                Copy
+              </button>
+            </div>
+            <p style="margin-top: 0.5rem;">
+              Copy this key into your Roblox loader UI. You can always see it again in Dashboard
+              or in the list on the right.
+            </p>
+          </div>
+        <% } %>
+      </div>
+
+      <!-- RIGHT: EXISTING KEYS -->
+      <div class="card">
+        <div class="card-header-row">
+          <h2>Your Keys</h2>
+          <span class="badge badge-soft">
+            <%= (keys && keys.length) ? keys.length : 0 %> total
+          </span>
+        </div>
+
+        <% if (!keys || !keys.length) { %>
+          <p class="helper-text">
+            No keys yet. Complete a verification to generate your first key.
+          </p>
+        <% } else { %>
+          <div class="table-wrapper">
+            <table class="keys-table">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Provider</th>
+                  <th>Time Left</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <%
+                  const now = Date.now();
+                  keys.forEach(function(k) {
+                    const expiresAt = k.expiresAfter || 0;
+                    const leftMs = expiresAt - now;
+                    const leftSec = Math.max(0, Math.floor(leftMs / 1000));
+                    const hours = Math.floor(leftSec / 3600);
+                    const mins = Math.floor((leftSec % 3600) / 60);
+                    const isExpired = k.deleted || !expiresAt || expiresAt <= now;
+                    const status = isExpired ? 'Expired' : 'Active';
+                %>
+                  <tr>
+                    <td>
+                      <div class="key-copy-wrap">
+                        <code class="mono"><%= k.token %></code>
+                        <button
+                          type="button"
+                          class="btn btn-small btn-outline"
+                          data-copy-key="<%= k.token %>"
+                        >
+                          Copy
+                        </button>
+                      </div>
+                    </td>
+                    <td><%= k.provider || '-' %></td>
+                    <td>
+                      <% if (isExpired) { %>
+                        00:00
+                      <% } else { %>
+                        <%= hours.toString().padStart(2,'0') %>:<%= mins.toString().padStart(2,'0') %>
+                      <% } %>
+                    </td>
+                    <td>
+                      <span
+                        class="status-pill <%= status === 'Active'
+                                               ? 'status-working'
+                                               : 'status-maint' %>"
+                      >
+                        <%= status %>
+                      </span>
+                    </td>
+                  </tr>
+                <% }) %>
+              </tbody>
+            </table>
+          </div>
+        <% } %>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>Need help? Join our Discord.</span>
+  </footer>
+
+  <!-- Copy key handler (mobile & desktop) -->
+  <script>
+    function setButtonCopiedState(btn) {
+      const originalText = btn.dataset.originalText || btn.textContent;
+      if (!btn.dataset.originalText) {
+        btn.dataset.originalText = originalText;
+      }
+      btn.classList.add('copied');
+      btn.textContent = 'Copied';
+
+      setTimeout(function () {
+        btn.classList.remove('copied');
+        btn.textContent = btn.dataset.originalText || 'Copy';
+      }, 1600);
+    }
+
+    async function copyKeyFromButton(btn) {
+      const key = btn.getAttribute('data-copy-key');
+      if (!key) return;
+
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          await navigator.clipboard.writeText(key);
+        } else {
+          // Fallback lama untuk browser yang belum support Clipboard API
+          const ta = document.createElement('textarea');
+          ta.value = key;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.focus();
+          ta.select();
+          document.execCommand('copy');
+          document.body.removeChild(ta);
+        }
+        setButtonCopiedState(btn);
+      } catch (err) {
+        console.error('Failed to copy key:', err);
+        alert('Copy failed, please copy manually:\\n' + key);
+      }
+    }
+
+    // Delegasi event: semua tombol dengan data-copy-key akan otomatis bekerja
+    document.addEventListener('click', function (ev) {
+      const btn = ev.target.closest('[data-copy-key]');
+      if (!btn) return;
+      copyKeyFromButton(btn);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dashboard - <%= siteName || 'ExHub' %></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/public/css/main.css" />
+  <link rel="icon" type="image/png" href="/public/img/logo-exhub.png" />
+  <script src="/public/js/protect.js" defer></script>
+</head>
+<body class="page-dark">
+
+  <!-- NAVBAR -->
+  <%- include('partials/nav', { active: 'dashboard' }) %>
+
+  <main class="container">
+    <!-- HEADER USER + STATS -->
+    <section class="page-header dashboard-header">
+      <div class="user-info">
+        <img
+          class="avatar"
+          src="<%= user && user.avatar
+                ? 'https://cdn.discordapp.com/avatars/' + user.id + '/' + user.avatar + '.png'
+                : '/public/img/logo-exhub.png' %>"
+          alt="avatar"
+        />
+        <div>
+          <h1>Welcome back, <%= (user && (user.global_name || user.username)) || 'User' %></h1>
+          <% if (user && user.id) { %>
+            <p class="helper-text">
+              Discord ID: <code><%= user.id %></code>
+            </p>
+          <% } %>
+        </div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-card">
+          <span class="stat-label">Total Keys</span>
+          <span class="stat-value"><%= (stats && stats.totalKeys) || 0 %></span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Active Keys</span>
+          <span class="stat-value"><%= (stats && stats.activeKeys) || 0 %></span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Premium Keys</span>
+          <span class="stat-value"><%= (stats && stats.premiumKeys) || 0 %></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIST KEY -->
+    <section class="card">
+      <div class="card-header-row">
+        <h2>Your Keys</h2>
+        <a href="/get-key?provider=linkvertise" class="btn btn-small btn-primary">
+          Get New Key
+        </a>
+      </div>
+
+      <% if (!keys || !keys.length) { %>
+        <p class="helper-text">
+          You don't have any keys yet. Generate one from the Get Key page.
+        </p>
+      <% } else { %>
+        <div class="table-wrapper">
+          <table class="keys-table">
+            <thead>
+              <tr>
+                <th>Key</th>
+                <th>Provider</th>
+                <th>Created</th>
+                <th>Expires</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% var now = Date.now(); %>
+              <% keys.forEach(function(k) {
+                   var expired = k.deleted || (k.expiresAfter && k.expiresAfter <= now);
+                   var status = expired ? 'Expired' : 'Active';
+                   var createdAt = k.createdAt
+                     ? new Date(k.createdAt).toLocaleString()
+                     : '-';
+                   var expiresAt = k.expiresAfter
+                     ? new Date(k.expiresAfter).toLocaleString()
+                     : '-';
+              %>
+                <tr>
+                  <td>
+                    <div
+                      class="key-copy-wrap"
+                      style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;"
+                    >
+                      <code class="mono"><%= k.token %></code>
+                      <button
+                        type="button"
+                        class="btn btn-small btn-outline"
+                        data-copy-key="1"
+                        data-token="<%= k.token %>"
+                        aria-label="Copy key"
+                      >
+                        📋
+                      </button>
+                    </div>
+                  </td>
+                  <td><%= k.provider || '-' %></td>
+                  <td><%= createdAt %></td>
+                  <td><%= expiresAt %></td>
+                  <td>
+                    <span class="status-pill <%= status === 'Active'
+                                                    ? 'status-working'
+                                                    : 'status-maint' %>">
+                      <%= status %>
+                    </span>
+                  </td>
+                </tr>
+              <% }) %>
+            </tbody>
+          </table>
+        </div>
+      <% } %>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>
+      Dashboard connected to Discord account:
+      <strong><%= (user && user.username) || 'Unknown' %></strong>
+    </span>
+  </footer>
+
+  <!-- Copy key script (mobile & desktop) -->
+  <script>
+    (function () {
+      async function copyKey(btn) {
+        const token = btn.getAttribute("data-token");
+        if (!token) return;
+
+        const text = token;
+        const originalText = btn.getAttribute("data-original-text") || btn.textContent;
+
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+          } else {
+            // Fallback lama untuk browser lama / beberapa mobile
+            const textarea = document.createElement("textarea");
+            textarea.value = text;
+            textarea.setAttribute("readonly", "");
+            textarea.style.position = "fixed";
+            textarea.style.opacity = "0";
+            document.body.appendChild(textarea);
+            textarea.focus();
+            textarea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textarea);
+          }
+
+          // Feedback kecil di tombol (ubah icon sementara)
+          btn.setAttribute("data-original-text", originalText);
+          btn.textContent = "✓";
+          btn.classList.add("copied");
+
+          setTimeout(function () {
+            btn.textContent = originalText;
+            btn.classList.remove("copied");
+          }, 1500);
+        } catch (err) {
+          console.error("Failed to copy key:", err);
+          alert("Failed to copy key:\n" + text);
+        }
+      }
+
+      // Event delegation supaya aman di mobile & desktop
+      document.addEventListener("click", function (e) {
+        const btn = e.target.closest("[data-copy-key]");
+        if (!btn) return;
+        e.preventDefault();
+        copyKey(btn);
+      });
+    })();
+  </script>
+</body>
+</html>

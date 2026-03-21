@@ -1,0 +1,98 @@
+{
+  "siteName": "ExHub Scripts",
+  "tagline": "Let's Hype With ExHub.",
+  "discordInvite": "https://discord.com/invite/Zn3jpF4AdT",
+  "loader": "https://exc-webs.vercel.app/api/script/loader",
+  "scripts": [
+    {
+      "id": "spear-fishing",
+      "name": "Spear Fishing",
+      "description": "Premium ExHub script for Spear Fishing with fast automation and quality-of-life tools.",
+      "version": "v1.16+",
+      "status": "working",
+      "isFree": true,
+      "thumbnail": "/public/img/spear-fishing.png",
+      "gameUrl": "https://www.roblox.com/id/games/101953168527257/Spear-Fishing"
+    },
+    {
+      "id": "indo-hangout",
+      "name": "Indo Hangout",
+      "description": "ExHub script for Indo Hangout that enhances social gameplay with utility and automation features.",
+      "version": "v1.0",
+      "status": "working",
+      "isFree": false,
+      "thumbnail": "/public/img/indo-hangout.png",
+      "gameUrl": "https://www.roblox.com/id/games/9788848685/Indo-Hangout"
+    },
+    {
+      "id": "indo-beach",
+      "name": "Indo Beach",
+      "description": "ExHub script for Indo Beach focused on smooth progression, automation, and extra utility options.",
+      "version": "v1.0",
+      "status": "working",
+      "isFree": false,
+      "thumbnail": "/public/img/indo-beach.png",
+      "gameUrl": "https://www.roblox.com/games/ZZZZZZZZ/Indo-Beach"
+    },
+    {
+      "id": "dungeon-heroes",
+      "name": "Dungeon Heroes",
+      "description": "Combat-ready ExHub script for Dungeon Heroes with powerful farming and progression helpers.",
+      "version": "v1.0",
+      "status": "working",
+      "isFree": false,
+      "thumbnail": "/public/img/dungeon-heroes.png",
+      "gameUrl": "https://www.roblox.com/id/games/94845773826960/Dungeon-Heroes"
+    },
+    {
+      "id": "build-a-zoo",
+      "name": "Build A Zoo",
+      "description": "ExHub script for Build A Zoo that streamlines grinding, collecting, and daily tasks.",
+      "version": "v1.0",
+      "status": "working",
+      "isFree": true,
+      "thumbnail": "/public/img/build-a-zoo.png",
+      "gameUrl": "https://www.roblox.com/id/games/105555311806207/Build-a-Zoo"
+    },
+    {
+      "id": "sawahindo",
+      "name": "Sawah Indo",
+      "description": "ExHub script for auto farming, auto sell, npc teleport and etc.",
+      "version": "v1.2",
+      "status": "working",
+      "isFree": false,
+      "thumbnail": "/public/img/sawahindo.png",
+      "gameUrl": "https://www.roblox.com/id/games/83369512629707/SAWAH-Indo"
+    },
+    {
+      "id": "indo-place",
+      "name": "Indo Place",
+      "description": "ExHub script for Indo Place adding automation, teleports, and helpful quality-of-life tweaks.",
+      "version": "v1.0",
+      "status": "maintenance",
+      "isFree": false,
+      "thumbnail": "/public/img/indo-place.png",
+      "gameUrl": "https://www.roblox.com/id/games/127989251151952/Indo-Place"
+    },
+    {
+      "id": "indo-ocean",
+      "name": "Indo Ocean",
+      "description": "ExHub script for Indo Ocean designed to speed up grinding and make free-roam more convenient.",
+      "version": "v1.0",
+      "status": "maintenance",
+      "isFree": false,
+      "thumbnail": "/public/img/indo-ocean.png",
+      "gameUrl": "https://www.roblox.com/id/games/71264562913161/Indo-Ocean"
+    },
+    {
+      "id": "violance-district",
+      "name": "Violance District",
+      "description": "ExHub script for Violence District that upgrades both killer and survivor gameplay (currently under maintenance).",
+      "version": "v1.0.0",
+      "status": "maintenance",
+      "isFree": false,
+      "thumbnail": "/public/img/violance-district.png",
+      "gameUrl": "https://www.roblox.com/id/games/93978595733734/Violence-District"
+    }
+  ]
+}
