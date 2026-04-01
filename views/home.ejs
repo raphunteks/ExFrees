@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   
   <!-- SCRIPT PENCEGAH FOUC (Flash of Unstyled Content) -->
-  <!-- Script ini mengeksekusi tema *sebelum* halaman dirender, agar warna tidak berkedip saat reload -->
   <script>
     (function() {
       const savedRgb = localStorage.getItem('exhub_theme_rgb');
@@ -19,10 +18,40 @@
   <link rel="stylesheet" href="/public/css/main.css" />
   <link rel="icon" type="image/png" href="/public/img/logo-exhub.png" />
   <script src="/public/js/protect.js" defer></script>
+
+  <!-- =========================================
+       ANIMASI POP-UP DARI BAWAH KE ATAS (FADE IN UP)
+       ========================================= -->
+  <style>
+    @keyframes fadeInUp {
+      0% {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-popup {
+      opacity: 0; /* Elemen disembunyikan di awal sebelum animasi berjalan */
+      animation: fadeInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    /* Durasi delay agar elemen muncul secara berurutan (Keren & Estetik) */
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+    .delay-7 { animation-delay: 0.7s; }
+  </style>
 </head>
 <body class="page-dark">
 
-  <!-- NAVBAR (reuse partial supaya konsisten di semua halaman) -->
+  <!-- NAVBAR -->
   <%- include('partials/nav', { active: 'home' }) %>
 
   <main>
@@ -30,22 +59,26 @@
     <section class="hero">
       <!-- LEFT: main copy -->
       <section class="hero-main">
-        <h1>
+        <!-- Teks utama muncul pertama -->
+        <h1 class="animate-popup delay-1">
           Let's Hype With<br />
           <span class="accent"><%= siteName %></span>.
         </h1>
 
-        <p class="hero-sub">
+        <!-- Subteks muncul kedua -->
+        <p class="hero-sub animate-popup delay-2">
           Exclusive Roblox scripts with features tuned for better performance,
           key-protected via Discord and ads provider.
         </p>
 
-        <div class="hero-actions">
+        <!-- Tombol aksi muncul ketiga -->
+        <div class="hero-actions animate-popup delay-3">
           <a href="/get-key?provider=workink" class="btn btn-primary">Get Free Key</a>
           <a href="/scripts" class="btn btn-outline">Browse Scripts</a>
         </div>
 
-        <div class="hero-stats">
+        <!-- Pill status muncul keempat -->
+        <div class="hero-stats animate-popup delay-4">
           <div class="stat-pill">
             <span class="dot dot-green"></span> Undetected &amp; Secure
           </div>
@@ -57,7 +90,8 @@
           </div>
         </div>
 
-        <div class="hero-loader-card">
+        <!-- Kartu script loader muncul kelima -->
+        <div class="hero-loader-card animate-popup delay-5">
           <div class="loader-tabs">
             <button class="tab active">loader.lua</button>
           </div>
@@ -70,8 +104,8 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
 
       <!-- RIGHT: discord + scripts preview -->
       <section class="hero-side">
-        <div class="discord-card">
-          <!-- Logo Discord SVG yang tajam -->
+        <!-- Kartu Discord muncul keenam -->
+        <div class="discord-card animate-popup delay-6">
           <svg class="discord-logo-svg" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 127.14 96.36">
             <path fill="#5865F2" d="M107.7,8.07A105.15,105.15,0,0,0,81.47,0a72.06,72.06,0,0,0-3.36,6.83A97.68,97.68,0,0,0,49,6.83,72.37,72.37,0,0,0,45.64,0,105.89,105.89,0,0,0,19.39,8.09C2.79,32.65-1.71,56.6.54,80.21h0A105.73,105.73,0,0,0,32.71,96.36,77.7,77.7,0,0,0,39.6,85.25a68.42,68.42,0,0,1-10.85-5.18c.91-.66,1.8-1.34,2.66-2a75.57,75.57,0,0,0,64.32,0c.87.71,1.76,1.39,2.66,2a68.68,68.68,0,0,1-10.87,5.19,77,77,0,0,0,6.89,11.1A105.25,105.25,0,0,0,126.6,80.22h0C129.24,52.84,122.09,29.11,107.7,8.07ZM42.45,65.69C36.18,65.69,31,60,31,53s5-12.74,11.43-12.74S54,46,53.89,53,48.84,65.69,42.45,65.69Zm42.24,0C78.41,65.69,73.31,60,73.31,53s5-12.74,11.43-12.74S96.3,46,96.19,53,91.08,65.69,84.69,65.69Z"/>
           </svg>
@@ -81,7 +115,6 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
             Connect with other users, get announcements and support.
           </p>
 
-          <!-- Statistik Members (Akan diupdate realtime oleh JS di bawah) -->
           <div class="discord-stats">
             <div class="stat-item">
               <span class="dot dot-online"></span>
@@ -99,37 +132,24 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
             </div>
           </div>
 
-          <!-- Link Discord dimasukkan langsung ke href ini -->
-          <a
-            href="https://discord.gg/Zn3jpF4AdT"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="btn btn-discord btn-full"
-          >
+          <a href="https://discord.gg/Zn3jpF4AdT" target="_blank" rel="noopener noreferrer" class="btn btn-discord btn-full">
             Join Server Discord
           </a>
         </div>
 
-        <div class="scripts-card">
+        <!-- Kartu Scripts muncul ketujuh -->
+        <div class="scripts-card animate-popup delay-7">
           <h3>Supported Games</h3>
-          <p class="scripts-sub">
-            A few of the scripts available in <%= siteName %>.
-          </p>
-
+          <p class="scripts-sub">A few of the scripts available in <%= siteName %>.</p>
           <div class="scripts-list">
             <% (scriptsPreview || []).forEach(function(s) { %>
               <div class="script-item">
-                <img
-                  src="<%= s.thumbnail || '/public/img/logo-exhub.png' %>"
-                  class="script-thumb"
-                  alt="<%= s.name %>"
-                />
+                <img src="<%= s.thumbnail || '/public/img/logo-exhub.png' %>" class="script-thumb" alt="<%= s.name %>"/>
                 <div class="script-meta">
                   <div class="script-title-row">
                     <span class="script-name"><%= s.name %></span>
                     <span class="script-version"><%= s.version %></span>
                   </div>
-
                   <span class="status-pill <%= s.status === 'working' ? 'status-working' : 'status-maint' %>">
                     <%= s.status === 'working' ? 'Working' : 'Maintenance' %>
                   </span>
@@ -137,7 +157,6 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
               </div>
             <% }) %>
           </div>
-
           <a href="/scripts" class="link-muted">View all scripts →</a>
         </div>
       </section>
@@ -156,7 +175,6 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
        ========================================= -->
   <div class="theme-switcher-wrapper">
     <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme Panel">
-      <!-- Icon Palet / Pengaturan -->
       <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3"></circle>
         <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -196,16 +214,12 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
     </div>
   </div>
 
-  <!-- SCRIPT UNTUK MENGAMBIL DATA MEMBER DISCORD SECARA REALTIME & THEME SWITCHER -->
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
       /* =========================================
          1. SCRIPT MENGAMBIL DATA DISCORD
          ========================================= */
-      // Menggunakan link invite kamu secara langsung
       const inviteUrl = "https://discord.gg/Zn3jpF4AdT";
-      
-      // Mengekstrak kode invite (dari "discord.gg/Zn3jpF4AdT" diambil "Zn3jpF4AdT")
       const inviteCodeMatch = inviteUrl.match(/(?:discord\.gg\/|discord\.com\/invite\/)([a-zA-Z0-9-]+)/);
       const inviteCode = inviteCodeMatch ? inviteCodeMatch[1] : null;
 
@@ -214,12 +228,9 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
 
       if (inviteCode) {
         try {
-          // Melakukan HTTP Request ke Discord API
           const response = await fetch(`https://discord.com/api/v9/invites/${inviteCode}?with_counts=true`);
           if (response.ok) {
             const data = await response.json();
-            
-            // Animasi / Set data ke HTML
             if (onlineEl && data.approximate_presence_count !== undefined) {
               onlineEl.innerText = data.approximate_presence_count.toLocaleString();
             }
@@ -227,17 +238,13 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
               totalEl.innerText = data.approximate_member_count.toLocaleString();
             }
           } else {
-            onlineEl.innerText = "N/A";
-            totalEl.innerText = "N/A";
+            onlineEl.innerText = "N/A"; totalEl.innerText = "N/A";
           }
         } catch (err) {
-          console.error('Gagal mengambil data Discord:', err);
-          onlineEl.innerText = "Error";
-          totalEl.innerText = "Error";
+          onlineEl.innerText = "Error"; totalEl.innerText = "Error";
         }
       } else {
-        onlineEl.innerText = "-";
-        totalEl.innerText = "-";
+        onlineEl.innerText = "-"; totalEl.innerText = "-";
       }
 
       /* =========================================
@@ -247,25 +254,21 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
       const themePanel = document.getElementById('theme-panel');
       const colorBtns = document.querySelectorAll('.color-btn');
 
-      // Tampilkan/Sembunyikan panel saat gear diklik
       themeToggleBtn.addEventListener('click', () => {
         themePanel.classList.toggle('active');
       });
 
-      // Tutup panel jika mengeklik area di luar widget
       document.addEventListener('click', (e) => {
         if (!e.target.closest('.theme-switcher-wrapper')) {
           themePanel.classList.remove('active');
         }
       });
 
-      // Fungsi untuk mengaplikasikan warna dan menyimpan ke memori browser (localStorage)
       function applyTheme(rgbValues, themeName) {
         document.documentElement.style.setProperty('--accent-rgb', rgbValues);
         localStorage.setItem('exhub_theme_rgb', rgbValues);
         localStorage.setItem('exhub_theme_name', themeName);
 
-        // Ubah styling tombol yang aktif (lingkaran putih di sekitar pilihan warna)
         colorBtns.forEach(btn => {
           if(btn.dataset.theme === themeName) {
             btn.classList.add('active');
@@ -275,7 +278,6 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
         });
       }
 
-      // Memeriksa dan menandai tombol warna mana yang terakhir dipilih saat web dibuka
       const savedThemeName = localStorage.getItem('exhub_theme_name') || 'green';
       colorBtns.forEach(btn => {
         if (btn.dataset.theme === savedThemeName) {
@@ -284,7 +286,6 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
           btn.classList.remove('active');
         }
         
-        // Event saat tombol warna diklik
         btn.addEventListener('click', () => {
           applyTheme(btn.dataset.color, btn.dataset.theme);
         });
