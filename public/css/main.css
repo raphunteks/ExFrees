@@ -37,11 +37,25 @@ body.page-dark {
   min-height: 100vh;
   font-family: var(--font-main);
   color: var(--text-main);
-  /* Latar belakang gradient mengikuti warna tema dinamis */
+  
+  /* =========================================
+     BACKGROUND IMAGE + OVERLAY + DYNAMIC GLOW
+     ========================================= */
   background:
-    radial-gradient(circle at 0 0, rgba(var(--accent-rgb), 0.1), transparent 50%),
-    radial-gradient(circle at 100% 100%, rgba(var(--accent-rgb), 0.08), transparent 55%),
-    #02030a;
+    /* 1. Cahaya dinamis kiri atas */
+    radial-gradient(circle at 0 0, rgba(var(--accent-rgb), 0.15), transparent 50%),
+    /* 2. Cahaya dinamis kanan bawah */
+    radial-gradient(circle at 100% 100%, rgba(var(--accent-rgb), 0.1), transparent 55%),
+    /* 3. Overlay warna gelap (agar gambar tidak bertabrakan dengan teks) */
+    linear-gradient(rgba(2, 3, 10, 0.85), rgba(2, 3, 10, 0.95)),
+    /* 4. URL Gambar Background Kamu */
+    url('/public/img/bg-keren1.jpg');
+
+  /* Memastikan gambar background posisinya pas, tidak terpotong, & tidak ikut scroll */
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
 }
 
 /* NAVBAR */
