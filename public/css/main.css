@@ -6,18 +6,22 @@
   --accent: rgb(var(--accent-rgb));
   --accent-soft: rgba(var(--accent-rgb), 0.2);
 
-  --bg-dark: #05070b;
-  --bg-card: #121622;
-  --bg-card-soft: #181d2b;
+  /* Diubah menjadi RGBA transparan untuk efek Glassmorphism */
+  --bg-dark: rgba(5, 7, 11, 0.8);
+  --bg-card: rgba(18, 22, 34, 0.45);
+  --bg-card-soft: rgba(24, 29, 43, 0.45);
   --text-main: #f4f7ff;
   --text-muted: #a3adc7;
-  --border-soft: rgba(255, 255, 255, 0.06);
+  
+  /* Border kaca yang lebih terang namun transparan */
+  --border-soft: rgba(255, 255, 255, 0.12);
+  
   --danger: #ff4b6a;
   --warning: #ffbd4a;
   --success: #41d07c;
   --radius-lg: 18px;
   --radius-md: 12px;
-  --shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.6);
+  --shadow-soft: 0 18px 60px rgba(0, 0, 0, 0.5);
   --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
@@ -39,17 +43,17 @@ body.page-dark {
   color: var(--text-main);
   
   /* =========================================
-     BACKGROUND IMAGE + OVERLAY + DYNAMIC GLOW
+     BACKGROUND IMAGE (RANDOM) + GLASS OVERLAY 
      ========================================= */
   background:
     /* 1. Cahaya dinamis kiri atas */
-    radial-gradient(circle at 0 0, rgba(var(--accent-rgb), 0.15), transparent 50%),
+    radial-gradient(circle at 0 0, rgba(var(--accent-rgb), 0.25), transparent 50%),
     /* 2. Cahaya dinamis kanan bawah */
-    radial-gradient(circle at 100% 100%, rgba(var(--accent-rgb), 0.1), transparent 55%),
-    /* 3. Overlay warna gelap (agar gambar tidak bertabrakan dengan teks) */
-    linear-gradient(rgba(2, 3, 10, 0.85), rgba(2, 3, 10, 0.95)),
-    /* 4. URL Gambar Background Kamu */
-    url('/public/img/bg-keren1.jpg');
+    radial-gradient(circle at 100% 100%, rgba(var(--accent-rgb), 0.2), transparent 55%),
+    /* 3. Overlay kaca gelap (dikurangi opacity-nya agar BG terlihat) */
+    linear-gradient(rgba(5, 7, 11, 0.65), rgba(5, 7, 11, 0.85)),
+    /* 4. URL Gambar Background (Bisa diisi oleh JS, default ke bg-keren1) */
+    var(--random-bg, url('/public/img/bg-keren1.jpg'));
 
   /* Memastikan gambar background posisinya pas, tidak terpotong, & tidak ikut scroll */
   background-size: cover;
@@ -58,7 +62,7 @@ body.page-dark {
   background-repeat: no-repeat;
 }
 
-/* NAVBAR */
+/* NAVBAR (Efek Kaca Kuat) */
 .nav {
   position: sticky;
   top: 0;
@@ -67,8 +71,9 @@ body.page-dark {
   align-items: center;
   justify-content: space-between;
   padding: 14px 10vw;
-  backdrop-filter: blur(16px);
-  background: linear-gradient(90deg, #050712f2, #050712cc);
+  background: linear-gradient(90deg, rgba(5, 7, 18, 0.5), rgba(5, 7, 18, 0.3));
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border-soft);
 }
 
@@ -92,7 +97,7 @@ body.page-dark {
   border-radius: 50%;
   object-fit: cover;
   /* Shadow dinamis mengikuti tema */
-  box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.35); 
+  box-shadow: 0 0 18px rgba(var(--accent-rgb), 0.4); 
 }
 
 .nav-title {
@@ -128,8 +133,8 @@ body.page-dark {
 
 .nav-link:hover {
   color: var(--text-main);
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.02);
+  border-color: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 .nav-link-active {
@@ -139,7 +144,7 @@ body.page-dark {
 }
 
 .nav-link-ghost {
-  border-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 /* HERO */
@@ -189,31 +194,34 @@ body.page-dark {
 .btn-primary {
   background: var(--accent);
   color: #04050a;
-  /* Shadow dinamis */
-  box-shadow: 0 12px 32px rgba(var(--accent-rgb), 0.35); 
+  box-shadow: 0 8px 24px rgba(var(--accent-rgb), 0.4); 
   font-weight: 600;
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  /* Shadow dinamis */
-  box-shadow: 0 18px 42px rgba(var(--accent-rgb), 0.5); 
+  box-shadow: 0 12px 32px rgba(var(--accent-rgb), 0.6); 
 }
 
 .btn-outline {
-  background: transparent;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--text-main);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .btn-outline:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.1);
 }
 
 .btn-discord {
-  background: #5865f2;
+  background: rgba(88, 101, 242, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   color: #fff;
-  box-shadow: 0 12px 32px rgba(88, 101, 242, 0.45);
+  border: 1px solid rgba(88, 101, 242, 0.5);
+  box-shadow: 0 8px 24px rgba(88, 101, 242, 0.35);
 }
 
 .btn-full {
@@ -244,15 +252,16 @@ body.page-dark {
 
 /* tombol danger untuk admin / aksi destructive */
 .btn-danger {
-  background: var(--danger);
+  background: rgba(255, 75, 106, 0.85);
+  backdrop-filter: blur(10px);
   color: #fff;
-  border-color: rgba(255, 75, 106, 0.8);
-  box-shadow: 0 10px 28px rgba(255, 75, 106, 0.4);
+  border: 1px solid rgba(255, 75, 106, 0.5);
+  box-shadow: 0 8px 24px rgba(255, 75, 106, 0.3);
 }
 
 .btn-danger:hover {
   transform: translateY(-1px);
-  box-shadow: 0 16px 36px rgba(255, 75, 106, 0.5);
+  box-shadow: 0 12px 32px rgba(255, 75, 106, 0.5);
 }
 
 /* HERO stats */
@@ -267,9 +276,10 @@ body.page-dark {
   padding: 5px 10px;
   border-radius: 999px;
   font-size: 12px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(8px);
   border: 1px solid var(--border-soft);
-  color: var(--text-muted);
+  color: var(--text-main);
 }
 
 .dot {
@@ -282,14 +292,15 @@ body.page-dark {
 
 .dot-green {
   background: var(--accent);
-  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.5);
+  box-shadow: 0 0 8px rgba(var(--accent-rgb), 0.6);
 }
 
-/* loader code card */
+/* loader code card (Glassmorphism) */
 .hero-loader-card {
-  /* Gradient card dinamis */
   background: radial-gradient(circle at top left, rgba(var(--accent-rgb), 0.15), transparent 60%),
     var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius-lg);
   padding: 14px;
   border: 1px solid var(--border-soft);
@@ -307,20 +318,23 @@ body.page-dark {
   border-radius: 999px;
   border: none;
   font-size: 12px;
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(255, 255, 255, 0.05);
   color: var(--text-muted);
 }
 
 .loader-tabs .tab.active {
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.4);
   color: var(--accent);
+  border: 1px solid var(--border-soft);
 }
 
 .code-block {
   margin: 0;
   padding: 10px 12px;
   border-radius: 12px;
-  background: #05070f;
+  background: rgba(5, 7, 15, 0.5); /* Tembus pandang */
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   color: #c9d4ff;
   font-family: "JetBrains Mono", ui-monospace, Menlo, Monaco, Consolas, monospace;
   font-size: 12px;
@@ -334,13 +348,11 @@ body.page-dark {
   gap: 18px;
 }
 
-.discard {
+/* KARTU GLOBAL (Glassmorphism Penuh) */
+.card, .discord-card, .scripts-card, .stat-card, .admin-action-card, .user-card {
   background: var(--bg-card);
-}
-
-.discord-card,
-.scripts-card {
-  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: var(--radius-lg);
   padding: 18px 18px 16px;
   border: 1px solid var(--border-soft);
@@ -361,11 +373,12 @@ body.page-dark {
 .discord-stats {
   display: flex;
   justify-content: space-around;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(12px);
   padding: 12px;
   border-radius: 8px;
   margin: 15px 0;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .discord-stats .stat-item {
@@ -382,7 +395,7 @@ body.page-dark {
 
 .dot-online {
   background-color: #23a559;
-  box-shadow: 0 0 8px rgba(35, 165, 89, 0.6);
+  box-shadow: 0 0 10px rgba(35, 165, 89, 0.7);
 }
 
 .dot-total {
@@ -404,7 +417,7 @@ body.page-dark {
 
 .discord-stats .stat-label {
   font-size: 0.75em;
-  color: #b5bac1;
+  color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: 3px;
@@ -435,6 +448,7 @@ body.page-dark {
   height: 48px;
   border-radius: 10px;
   object-fit: cover;
+  border: 1px solid var(--border-soft);
 }
 
 .script-meta {
@@ -459,12 +473,14 @@ body.page-dark {
 
 .status-working {
   color: var(--success);
-  background: rgba(65, 208, 124, 0.15);
+  background: rgba(65, 208, 124, 0.2);
+  border: 1px solid rgba(65, 208, 124, 0.3);
 }
 
 .status-maint {
   color: var(--warning);
-  background: rgba(255, 189, 74, 0.15);
+  background: rgba(255, 189, 74, 0.2);
+  border: 1px solid rgba(255, 189, 74, 0.3);
 }
 
 .status-pill {
@@ -509,15 +525,6 @@ body.page-dark {
   gap: 18px;
 }
 
-/* CARD GENERAL */
-.card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: 18px 18px 16px;
-  border: 1px solid var(--border-soft);
-  box-shadow: var(--shadow-soft);
-}
-
 .card-header-row {
   display: flex;
   justify-content: space-between;
@@ -530,7 +537,7 @@ body.page-dark {
   color: var(--text-muted);
 }
 
-/* BADGES GENERAL */
+/* BADGES GENERAL (Glass) */
 .badge {
   display: inline-flex;
   align-items: center;
@@ -539,36 +546,42 @@ body.page-dark {
   font-size: 11px;
   background: var(--accent-soft);
   color: var(--accent);
+  border: 1px solid rgba(var(--accent-rgb), 0.3);
 }
 
 .badge-soft {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--border-soft);
   color: var(--text-muted);
 }
 
 .badge-success {
-  background: rgba(65, 208, 124, 0.16);
+  background: rgba(65, 208, 124, 0.2);
   color: #b7fbd7;
+  border: 1px solid rgba(65, 208, 124, 0.3);
 }
 
 .badge-warning {
-  background: rgba(255, 189, 74, 0.16);
+  background: rgba(255, 189, 74, 0.2);
   color: #ffe3aa;
+  border: 1px solid rgba(255, 189, 74, 0.3);
 }
 
 .badge-danger {
-  background: rgba(255, 75, 106, 0.16);
+  background: rgba(255, 75, 106, 0.2);
   color: #ffd1dc;
+  border: 1px solid rgba(255, 75, 106, 0.3);
 }
 
 .badge-muted {
-  background: rgba(163, 173, 199, 0.15);
-  color: var(--text-muted);
+  background: rgba(163, 173, 199, 0.2);
+  color: var(--text-main);
+  border: 1px solid rgba(163, 173, 199, 0.3);
 }
 
 .badge-outline {
   background: transparent;
-  border: 1px solid rgba(163, 173, 199, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   color: var(--text-main);
 }
 
@@ -582,14 +595,14 @@ body.page-dark {
 
 .keys-table th,
 .keys-table td {
-  padding: 7px 8px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .keys-table th {
   text-align: left;
   color: var(--text-muted);
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .mono {
@@ -620,19 +633,14 @@ body.page-dark {
 }
 
 .script-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  border: 1px solid var(--border-soft);
-  box-shadow: var(--shadow-soft);
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
+  padding: 0; /* Reset padding untuk card dengan gambar besar */
 }
 
 .script-card-thumb {
   width: 100%;
   height: 160px;
   object-fit: cover;
+  border-bottom: 1px solid var(--border-soft);
 }
 
 .script-card-body {
@@ -663,7 +671,7 @@ body.page-dark {
 }
 
 .script-card-footer {
-  padding: 10px 14px 12px;
+  padding: 10px 14px 14px;
   display: flex;
   justify-content: space-between;
   gap: 8px;
@@ -688,6 +696,7 @@ body.page-dark {
   height: 56px;
   border-radius: 50%;
   object-fit: cover;
+  border: 2px solid rgba(var(--accent-rgb), 0.5);
 }
 
 .stats-row {
@@ -695,84 +704,79 @@ body.page-dark {
   gap: 10px;
 }
 
+/* stat-card sudah otomatis jadi kaca karena masuk selector global card */
 .stat-card {
-  background: var(--bg-card);
   border-radius: var(--radius-md);
-  padding: 10px 14px;
-  border: 1px solid var(--border-soft);
+  padding: 12px 16px;
 }
 
 .stat-label {
   font-size: 11px;
   color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .stat-value {
-  font-size: 18px;
+  font-size: 22px;
   font-weight: 700;
+  display: block;
+  margin-top: 4px;
 }
 
-.stat-value-success {
-  color: var(--success);
-}
+.stat-value-success { color: var(--success); }
+.stat-value-warning { color: var(--warning); }
+.stat-value-danger { color: var(--danger); }
+.stat-value-muted { color: var(--text-muted); }
 
-.stat-value-warning {
-  color: var(--warning);
-}
-
-.stat-value-danger {
-  color: var(--danger);
-}
-
-.stat-value-muted {
-  color: var(--text-muted);
-}
-
-/* INPUT GLOBAL */
+/* INPUT GLOBAL (Kaca Tembus Pandang) */
 .input {
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  background-color: #05070f;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background-color: rgba(5, 7, 15, 0.35); /* Kaca gelap */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   color: var(--text-main);
   font-size: 13px;
   outline: none;
 }
 
 .input::placeholder {
-  color: #6b7280;
+  color: #8b92a5;
 }
 
 .input:focus {
   border-color: var(--accent);
-  /* Border shadow dinamis mengikuti tema */
-  box-shadow: 0 0 0 1px rgba(var(--accent-rgb), 0.6);
-  background: #02030a;
+  box-shadow: 0 0 0 2px rgba(var(--accent-rgb), 0.4);
+  background: rgba(5, 7, 15, 0.6);
 }
 
-/* ALERTS */
+/* ALERTS (Kaca) */
 .alert {
   margin-top: 12px;
-  padding: 10px 12px;
+  padding: 12px 16px;
   border-radius: 12px;
   font-size: 13px;
-  border: 1px solid transparent;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
 }
 
 .alert-success {
-  background: rgba(65, 208, 124, 0.1);
+  background: rgba(65, 208, 124, 0.15);
   border: 1px solid rgba(65, 208, 124, 0.4);
 }
 
 .alert-error {
-  background: rgba(255, 75, 106, 0.12);
+  background: rgba(255, 75, 106, 0.15);
   border: 1px solid rgba(255, 75, 106, 0.6);
 }
 
 .alert-title {
   font-weight: 600;
   margin-bottom: 4px;
+  font-size: 14px;
 }
 
 /* ADMIN BAR */
@@ -780,10 +784,12 @@ body.page-dark {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: linear-gradient(90deg, #121622, #181d2b);
+  background: linear-gradient(90deg, rgba(18, 22, 34, 0.6), rgba(24, 29, 43, 0.6));
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 10px 14px;
+  border: 1px solid var(--border-soft);
+  padding: 12px 16px;
   gap: 16px;
   margin-top: 10px;
 }
@@ -809,17 +815,15 @@ body.page-dark {
 }
 
 .admin-action-card {
-  background: var(--bg-card-soft);
   border-radius: var(--radius-md);
-  padding: 12px 14px;
-  border: 1px solid var(--border-soft);
+  padding: 16px;
 }
 
 .admin-action-card p {
   font-size: 13px;
   color: var(--text-muted);
   margin-top: 4px;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 .form-inline {
@@ -833,16 +837,13 @@ body.page-dark {
 .users-list {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-top: 10px;
+  gap: 16px;
+  margin-top: 14px;
 }
 
 .user-card {
-  background: var(--bg-card-soft);
-  border-radius: 14px;
-  /* Border card dinamis */
-  border: 1px solid rgba(var(--accent-rgb), 0.25);
-  padding: 12px;
+  border-radius: 16px;
+  border: 1px solid rgba(var(--accent-rgb), 0.35);
 }
 
 .user-card-header {
@@ -850,12 +851,13 @@ body.page-dark {
   justify-content: space-between;
   align-items: flex-start;
   gap: 12px;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
 }
 
 .user-id {
-  font-size: 13px;
-  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 6px;
 }
 
 .user-stats {
@@ -865,7 +867,7 @@ body.page-dark {
 }
 
 /* =========================================
-   THEME SWITCHER WIDGET UI 
+   THEME SWITCHER WIDGET UI (Glassmorphism)
    ========================================= */
 .theme-switcher-wrapper {
   position: fixed;
@@ -875,17 +877,19 @@ body.page-dark {
 }
 
 .theme-toggle-btn {
-  width: 50px;
-  height: 50px;
+  width: 54px;
+  height: 54px;
   border-radius: 50%;
-  background: var(--bg-card);
-  border: 1px solid var(--border-soft);
+  background: rgba(18, 22, 34, 0.6); /* Kaca */
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   color: var(--text-main);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
@@ -896,7 +900,8 @@ body.page-dark {
 .theme-toggle-btn:hover {
   transform: scale(1.1);
   border-color: var(--accent);
-  box-shadow: 0 0 20px rgba(var(--accent-rgb), 0.4);
+  background: rgba(18, 22, 34, 0.8);
+  box-shadow: 0 0 25px rgba(var(--accent-rgb), 0.5);
 }
 
 .theme-toggle-btn:hover svg {
@@ -906,17 +911,19 @@ body.page-dark {
 
 .theme-panel {
   position: absolute;
-  bottom: 65px;
+  bottom: 70px;
   right: 0;
-  width: 220px; /* Lebar diperbesar agar Grid 5x4 muat sempurna */
-  background: var(--bg-card-soft);
-  border: 1px solid var(--border-soft);
+  width: 230px; 
+  background: var(--bg-card-soft); /* Sudah kita set tembus pandang di :root */
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: var(--radius-md);
-  padding: 16px;
+  padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.8);
   opacity: 0;
   pointer-events: none;
   transform: translateY(15px);
@@ -932,14 +939,13 @@ body.page-dark {
 .theme-panel h4 {
   margin: 0;
   font-size: 12px;
-  color: var(--text-muted);
+  color: var(--text-main);
   text-align: center;
-  font-weight: 600;
+  font-weight: 700;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
-/* Ubah display flex -> GRID agar muat 20 warna (5 Kolom x 4 Baris) */
 .theme-colors {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -948,31 +954,33 @@ body.page-dark {
 }
 
 .color-btn {
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
-  border: 2px solid transparent;
+  border: 2px solid rgba(255, 255, 255, 0.1);
   cursor: pointer;
-  transition: transform 0.2s, border-color 0.2s;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.5);
 }
 
 .color-btn:hover {
   transform: scale(1.2);
+  border-color: rgba(255, 255, 255, 0.5);
 }
 
 .color-btn.active {
   border-color: #ffffff;
   transform: scale(1.15);
-  box-shadow: 0 0 10px currentColor;
+  box-shadow: 0 0 12px currentColor;
 }
 
 /* FOOTER */
 .footer {
   padding: 14px 10vw 22px;
   color: var(--text-muted);
-  font-size: 12px;
+  font-size: 13px;
   text-align: center;
+  backdrop-filter: blur(10px); /* Kaca di footer */
 }
 
 /* CENTER WRAP (login, 404, dll) */
@@ -986,8 +994,9 @@ body.page-dark {
 
 /* 404 card */
 .card-404 h1 {
-  font-size: 40px;
+  font-size: 48px;
   margin-top: 0;
+  color: var(--accent);
 }
 
 /* RESPONSIVE */
@@ -1025,7 +1034,6 @@ body.page-dark {
   }
 }
 
-/* ekstra mobile-tweak untuk admin & tabel */
 @media (max-width: 640px) {
   .admin-info-bar {
     flex-direction: column;
