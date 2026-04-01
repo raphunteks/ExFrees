@@ -4,21 +4,72 @@
   <meta charset="UTF-8" />
   <title>404 - <%= siteName || 'ExHub' %></title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  
+  <!-- SCRIPT PENCEGAH FOUC (Flash of Unstyled Content) -->
+  <script>
+    (function() {
+      const savedRgb = localStorage.getItem('exhub_theme_rgb');
+      if (savedRgb) {
+        document.documentElement.style.setProperty('--accent-rgb', savedRgb);
+      }
+    })();
+  </script>
+
   <link rel="stylesheet" href="/public/css/main.css" />
   <link rel="icon" type="image/png" href="/public/img/logo-exhub.png" />
   <script src="/public/js/protect.js" defer></script>
+
+  <!-- =========================================
+       ANIMASI KELAS DEWA (Fade In, Slide, Zoom)
+       ========================================= -->
+  <style>
+    @keyframes fadeInUp {
+      0% { opacity: 0; transform: translateY(40px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInLeft {
+      0% { opacity: 0; transform: translateX(-40px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes fadeInRight {
+      0% { opacity: 0; transform: translateX(40px); }
+      100% { opacity: 1; transform: translateX(0); }
+    }
+    @keyframes zoomIn {
+      0% { opacity: 0; transform: scale(0.9); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .animate-up { opacity: 0; animation: fadeInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+    .animate-left { opacity: 0; animation: fadeInLeft 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+    .animate-right { opacity: 0; animation: fadeInRight 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+    .animate-zoom { opacity: 0; animation: zoomIn 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards; }
+
+    /* Static delays untuk elemen kaskade */
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+    .delay-6 { animation-delay: 0.6s; }
+  </style>
 </head>
 <body class="page-dark">
   <main class="center-wrap">
-    <div class="card card-404" style="max-width:460px;width:100%;text-align:center;">
-      <h1 style="margin-top:0;margin-bottom:6px;">404</h1>
-      <p style="margin:0 0 6px;">This endpoint is only for the Roblox loader.</p>
-      <p class="helper-text" style="margin:0 0 14px;">
+    <!-- Kartu utama muncul dengan efek Zoom -->
+    <div class="card card-404 animate-zoom delay-1" style="max-width:460px;width:100%;text-align:center;">
+      
+      <!-- Angka 404 meluncur dari kiri -->
+      <h1 class="animate-left delay-2" style="margin-top:0;margin-bottom:6px;">404</h1>
+      
+      <!-- Penjelasan meluncur dari kanan -->
+      <p class="animate-right delay-3" style="margin:0 0 6px;">This endpoint is only for the Roblox loader.</p>
+      <p class="helper-text animate-right delay-4" style="margin:0 0 14px;">
         Use the in-game script loader instead of opening this link directly in your browser.
       </p>
 
-      <!-- Panel loader di tengah, mirip home -->
-      <div class="loader-panel" style="margin-top:10px;text-align:left;">
+      <!-- Panel loader di tengah, muncul dari bawah -->
+      <div class="loader-panel animate-up delay-5" style="margin-top:10px;text-align:left;">
         <span class="badge badge-soft" style="background:#16a34a22;color:#22c55e;">
           Loader Script
         </span>
@@ -29,10 +80,102 @@ loadstring(game:HttpGet("<%= loaderUrl %>"))()
         </pre>
       </div>
 
-      <a href="/" class="btn btn-primary btn-full" style="margin-top:16px;">
-        Back to Home
-      </a>
+      <!-- Tombol aksi muncul paling terakhir dari bawah -->
+      <div class="animate-up delay-6" style="margin-top:16px;">
+        <a href="/" class="btn btn-primary btn-full">
+          Back to Home
+        </a>
+      </div>
     </div>
   </main>
+
+  <!-- =========================================
+       TOMBOL WIDGET: THEME SWITCHER (20 WARNA)
+       ========================================= -->
+  <div class="theme-switcher-wrapper">
+    <button class="theme-toggle-btn" id="theme-toggle" aria-label="Toggle Theme Panel">
+      <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+      </svg>
+    </button>
+    <div class="theme-panel" id="theme-panel">
+      <h4>Accent Color</h4>
+      <div class="theme-colors">
+        <!-- Baris 1 -->
+        <button class="color-btn active" style="background: rgb(125, 252, 69); color: rgb(125, 252, 69);" data-color="125, 252, 69" data-theme="green" title="Neon Green"></button>
+        <button class="color-btn" style="background: rgb(57, 255, 20); color: rgb(57, 255, 20);" data-color="57, 255, 20" data-theme="toxic" title="Toxic Green"></button>
+        <button class="color-btn" style="background: rgb(0, 255, 170); color: rgb(0, 255, 170);" data-color="0, 255, 170" data-theme="mint" title="Aqua Mint"></button>
+        <button class="color-btn" style="background: rgb(0, 238, 255); color: rgb(0, 238, 255);" data-color="0, 238, 255" data-theme="electric" title="Electric Blue"></button>
+        <button class="color-btn" style="background: rgb(69, 182, 252); color: rgb(69, 182, 252);" data-color="69, 182, 252" data-theme="cyan" title="Cyan Blue"></button>
+        <!-- Baris 2 -->
+        <button class="color-btn" style="background: rgb(153, 221, 255); color: rgb(153, 221, 255);" data-color="153, 221, 255" data-theme="ice" title="Ice Blue"></button>
+        <button class="color-btn" style="background: rgb(138, 43, 226); color: rgb(138, 43, 226);" data-color="138, 43, 226" data-theme="violet" title="Deep Violet"></button>
+        <button class="color-btn" style="background: rgb(182, 69, 252); color: rgb(182, 69, 252);" data-color="182, 69, 252" data-theme="purple" title="Synthwave Purple"></button>
+        <button class="color-btn" style="background: rgb(75, 0, 130); color: rgb(75, 0, 130);" data-color="75, 0, 130" data-theme="indigo" title="Abyssal Indigo"></button>
+        <button class="color-btn" style="background: rgb(255, 0, 255); color: rgb(255, 0, 255);" data-color="255, 0, 255" data-theme="plasma" title="Plasma Pink"></button>
+        <!-- Baris 3 -->
+        <button class="color-btn" style="background: rgb(255, 42, 149); color: rgb(255, 42, 149);" data-color="255, 42, 149" data-theme="magenta" title="Hot Magenta"></button>
+        <button class="color-btn" style="background: rgb(255, 102, 153); color: rgb(255, 102, 153);" data-color="255, 102, 153" data-theme="rosegold" title="Rose Gold"></button>
+        <button class="color-btn" style="background: rgb(252, 69, 102); color: rgb(252, 69, 102);" data-color="252, 69, 102" data-theme="red" title="Crimson Red"></button>
+        <button class="color-btn" style="background: rgb(255, 87, 34); color: rgb(255, 87, 34);" data-color="255, 87, 34" data-theme="blood" title="Blood Orange"></button>
+        <button class="color-btn" style="background: rgb(255, 127, 80); color: rgb(255, 127, 80);" data-color="255, 127, 80" data-theme="coral" title="Sunset Coral"></button>
+        <!-- Baris 4 -->
+        <button class="color-btn" style="background: rgb(252, 182, 69); color: rgb(252, 182, 69);" data-color="252, 182, 69" data-theme="orange" title="Warning Orange"></button>
+        <button class="color-btn" style="background: rgb(255, 191, 0); color: rgb(255, 191, 0);" data-color="255, 191, 0" data-theme="gold" title="Cyber Gold"></button>
+        <button class="color-btn" style="background: rgb(255, 222, 89); color: rgb(255, 222, 89);" data-color="255, 222, 89" data-theme="yellow" title="Electric Yellow"></button>
+        <button class="color-btn" style="background: rgb(204, 255, 0); color: rgb(204, 255, 0);" data-color="204, 255, 0" data-theme="lime" title="Radioactive Lime"></button>
+        <button class="color-btn" style="background: rgb(224, 224, 224); color: rgb(224, 224, 224);" data-color="224, 224, 224" data-theme="silver" title="Ghost Silver"></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================
+    // SCRIPT LOGIKA THEME SWITCHER
+    // =========================================
+    document.addEventListener('DOMContentLoaded', () => {
+      const themeToggleBtn = document.getElementById('theme-toggle');
+      const themePanel = document.getElementById('theme-panel');
+      const colorBtns = document.querySelectorAll('.color-btn');
+
+      themeToggleBtn.addEventListener('click', () => {
+        themePanel.classList.toggle('active');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!e.target.closest('.theme-switcher-wrapper')) {
+          themePanel.classList.remove('active');
+        }
+      });
+
+      function applyTheme(rgbValues, themeName) {
+        document.documentElement.style.setProperty('--accent-rgb', rgbValues);
+        localStorage.setItem('exhub_theme_rgb', rgbValues);
+        localStorage.setItem('exhub_theme_name', themeName);
+
+        colorBtns.forEach(btn => {
+          if(btn.dataset.theme === themeName) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      }
+
+      const savedThemeName = localStorage.getItem('exhub_theme_name') || 'green';
+      colorBtns.forEach(btn => {
+        if (btn.dataset.theme === savedThemeName) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+        
+        btn.addEventListener('click', () => {
+          applyTheme(btn.dataset.color, btn.dataset.theme);
+        });
+      });
+    });
+  </script>
 </body>
 </html>
