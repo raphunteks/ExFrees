@@ -894,13 +894,14 @@ body.page-dark {
   position: absolute;
   bottom: 65px;
   right: 0;
+  width: 220px; /* Lebar diperbesar agar Grid 5x4 muat sempurna */
   background: var(--bg-card-soft);
   border: 1px solid var(--border-soft);
   border-radius: var(--radius-md);
-  padding: 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 14px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
   opacity: 0;
   pointer-events: none;
@@ -924,9 +925,12 @@ body.page-dark {
   text-transform: uppercase;
 }
 
+/* Ubah display flex -> GRID agar muat 20 warna (5 Kolom x 4 Baris) */
 .theme-colors {
-  display: flex;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  justify-items: center;
 }
 
 .color-btn {
